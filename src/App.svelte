@@ -1,13 +1,7 @@
 <script>
   import { Input, Button, Toaster, toast, Alert, Modal } from '@foxui/core';
   let task = '';
-  let Tasks = [
-    { text: 'Hello worldees', done: false },
-    { text: 'Hello worteld', done: false },
-    { text: 'Hello wtorld', done: false },
-    { text: 'Helflo world', done: false },
-    { text: 'Hello wfgorld', done: false }
-  ];
+  let Tasks = [];
 
   let open = false;
   let taskToDelete = null;
