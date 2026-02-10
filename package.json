@@ -19,6 +19,7 @@
     "@foxui/core": "^0.4.7",
     "@foxui/social": "^0.4.7",
     "@foxui/visual": "^0.4.7",
+    "@lucide/svelte": "^0.562.0",
     "@tailwindcss/vite": "^4.1.18",
     "tailwindcss": "^4.1.18"
   }
