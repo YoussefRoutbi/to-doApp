@@ -118,26 +118,31 @@
   </div>
 
   {#if content}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mt-6">
-      <div class="bg-black/40 rounded p-4 overflow-auto h-96">
-        <h2 class="font-semibold mb-2">Original Content</h2>
-        <pre class="text-sm whitespace-pre-wrap">{content}</pre>
-      </div>
-      <div class="bg-black/40 rounded p-4 h-96 flex flex-col">
-        <h2 class="font-semibold mb-2">Details</h2>
-        <p class="mb-2">Lines: <span class="text-indigo-400">{filtered ? filteredLines.length : lines.length}</span></p>
-        <h3 class="font-semibold mt-4 mb-1">Tail (last 10 lines)</h3>
-        <pre class="text-sm whitespace-pre-wrap flex-1 overflow-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-8xl mt-6">
+  <!-- Original Content -->
+  <div class="bg-black/40 rounded p-4 overflow-auto h-96">
+    <h2 class="font-semibold mb-2">Original Content</h2>
+    <pre class="text-sm whitespace-pre-wrap">{content}</pre>
+  </div>
+
+  <!-- Details -->
+  <div class="bg-black/40 rounded p-4 h-96 flex flex-col">
+    <h2 class="font-semibold mb-2">Details</h2>
+    <p class="mb-2">Lines: <span class="text-indigo-400">{filtered ? filteredLines.length : lines.length}</span></p>
+    <h3 class="font-semibold mt-4 mb-1">Tail (last 10 lines)</h3>
+    <pre class="text-sm whitespace-pre-wrap flex-1 overflow-auto">
 {filtered ? filteredTail.join("\n") : tail.join("\n")}
-        </pre>
-      </div>
-      {#if filtered}
-        <div class="bg-black/40 rounded p-4 overflow-auto h-96">
-          <h2 class="font-semibold mb-2">Filtered Content</h2>
-          <pre class="text-sm whitespace-pre-wrap">{filtered}</pre>
-        </div>
-      {/if}
+    </pre>
+  </div>
+
+  <!-- Filtered Content -->
+  {#if filtered}
+    <div class="bg-black/40 rounded p-4 overflow-auto h-96">
+      <h2 class="font-semibold mb-2">Filtered Content</h2>
+      <pre class="text-sm whitespace-pre-wrap">{filtered}</pre>
     </div>
+  {/if}
+</div>
 
     <div class="flex gap-4 mt-6">
       <button
