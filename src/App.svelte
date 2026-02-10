@@ -1,13 +1,23 @@
 <script>
   import { onMount } from "svelte";
 
+  let file = null;
+  let content = "";
+  let lines = [];
+  let tail = [];
+  let filtered = "";
+  let filteredLines = [];
+  let filteredTail = [];
+  let error = "";
+  let showAlert = false;
+
+  // Typewriter
   let fullText = "Youssef Rouatbi";
   let displayText = "";
-  
+
   onMount(() => {
     let index = 0;
     const speed = 150;
-    
     function type() {
       if (index < fullText.length) {
         displayText += fullText[index];
@@ -15,16 +25,8 @@
         setTimeout(type, speed);
       }
     }
-    
     type();
   });
-  let file = null;
-  let content = "";
-  let lines = [];
-  let tail = [];
-  let filtered = "";
-  let error = "";
-  let showAlert = false;
 
   function handleFile(f) {
     if (!f) return;
@@ -37,6 +39,8 @@
       lines = content.split("\n");
       tail = lines.slice(-10);
       filtered = "";
+      filteredLines = [];
+      filteredTail = [];
       showAlert = false;
       error = "";
     };
@@ -55,9 +59,17 @@
 
   function filterFile() {
     if (!content) return;
-    const uniqueEmails = Array.from(new Set(lines.map(l => l.trim()).filter(l => l)));
+
+    // Remove duplicate emails
+    const uniqueEmails = Array.from(
+      new Set(lines.map(l => l.trim()).filter(l => l))
+    );
+    filteredLines = uniqueEmails;
+    filteredTail = uniqueEmails.slice(-10);
     filtered = uniqueEmails.join("\n");
-    tail = uniqueEmails.slice(-10);
+
+    // Update tail in details
+    tail = filteredTail;
     showAlert = true;
   }
 
@@ -91,6 +103,7 @@
     </div>
   {/if}
 
+  <!-- File input -->
   <div
     class="w-full max-w-4xl border-2 border-dashed border-gray-600 rounded-lg
            p-6 text-center hover:border-indigo-500 transition"
@@ -105,20 +118,25 @@
   </div>
 
   {#if content}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-6xl mt-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mt-6">
       <div class="bg-black/40 rounded p-4 overflow-auto h-96">
         <h2 class="font-semibold mb-2">Original Content</h2>
         <pre class="text-sm whitespace-pre-wrap">{content}</pre>
       </div>
-
       <div class="bg-black/40 rounded p-4 h-96 flex flex-col">
         <h2 class="font-semibold mb-2">Details</h2>
-        <p class="mb-2">Lines: <span class="text-indigo-400">{lines.length}</span></p>
+        <p class="mb-2">Lines: <span class="text-indigo-400">{filtered ? filteredLines.length : lines.length}</span></p>
         <h3 class="font-semibold mt-4 mb-1">Tail (last 10 lines)</h3>
         <pre class="text-sm whitespace-pre-wrap flex-1 overflow-auto">
-{tail.join("\n")}
+{filtered ? filteredTail.join("\n") : tail.join("\n")}
         </pre>
       </div>
+      {#if filtered}
+        <div class="bg-black/40 rounded p-4 overflow-auto h-96">
+          <h2 class="font-semibold mb-2">Filtered Content</h2>
+          <pre class="text-sm whitespace-pre-wrap">{filtered}</pre>
+        </div>
+      {/if}
     </div>
 
     <div class="flex gap-4 mt-6">
@@ -140,8 +158,8 @@
     </div>
   {/if}
   <div class="mt-10 text-center text-2xl font-bold text-indigo-400">
-  <span>{displayText}</span><span class="animate-blink">|</span>
-</div>
+    <span>{displayText}</span><span class="animate-blink">|</span>
+  </div>
 </div>
 
 <style>
@@ -154,5 +172,16 @@
   .animate-gradient {
     background-size: 300% 300%;
     animation: gradient 10s ease infinite;
+  }
+
+  .animate-blink {
+    display: inline-block;
+    width: 1ch;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
   }
 </style>
